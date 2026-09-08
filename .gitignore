@@ -1,0 +1,10 @@
+.venv/
+.hf_cache/
+.apptainer_cache/
+.cache/
+.config/
+.local/
+__pycache__/
+.pytest_cache/
+*.pyc
+.coverage

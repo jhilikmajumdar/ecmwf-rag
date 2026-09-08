@@ -1,0 +1,9 @@
+ERA5 is ECMWF's fifth-generation atmospheric reanalysis.
+
+ERA5 model-level parameters are archived in GRIB2 format.
+
+ERA5 pressure-level data can be retrieved from the Copernicus Climate Data Store.
+
+The CDS API allows Python programs to request ERA5 datasets programmatically.
+
+ecCodes is ECMWF software for decoding and encoding GRIB and BUFR messages.
