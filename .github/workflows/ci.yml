@@ -12,6 +12,9 @@ on:
 
 jobs:
 
+  # -------------------------
+  # CI: Run unit tests
+  # -------------------------
   test:
 
     runs-on: ubuntu-latest
@@ -36,6 +39,9 @@ jobs:
           python -m pytest -v
 
 
+  # -------------------------
+  # CD: Build and publish Docker image
+  # -------------------------
   build-docker:
 
     needs:
@@ -44,6 +50,10 @@ jobs:
     if: github.event_name == 'push'
 
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
 
     steps:
 
@@ -55,3 +65,21 @@ jobs:
           docker build \
             -t ecmwf-rag:${{ github.sha }} \
             .
+
+      - name: Login to GitHub Container Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | \
+          docker login ghcr.io \
+            -u "${{ github.actor }}" \
+            --password-stdin
+
+      - name: Tag Docker image
+        run: |
+          docker tag \
+            ecmwf-rag:${{ github.sha }} \
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+      - name: Push Docker image
+        run: |
+          docker push \
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
